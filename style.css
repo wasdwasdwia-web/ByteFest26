@@ -1,0 +1,118 @@
+:root{--bg:#050c16;--panel:#0b1726;--line:#1a3550;--text:#dcecf7;--mute:#86a2ba;--accent:#5ce1ff;--gold:#ffb54a;--bad:#ff7b7b;color-scheme:dark}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font:16px/1.5 "IBM Plex Sans",system-ui,sans-serif;color:var(--text);background:var(--bg);overflow:hidden;
+  background-image:linear-gradient(color-mix(in srgb,var(--accent) 6%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--accent) 6%,transparent) 1px,transparent 1px);background-size:44px 44px}
+button,input,select{font:inherit;color:inherit}
+h1,h2,.brand,.ring-in strong{font-family:Rajdhani,system-ui,sans-serif}
+h1{font-size:clamp(26px,5vw,38px);line-height:1.1;font-weight:600}
+h2{font-size:30px;font-weight:600;margin-bottom:18px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.meta{color:var(--mute);font-size:14px}
+
+.app{display:grid;grid-template-columns:200px 1fr;height:100dvh}
+.nav{display:flex;flex-direction:column;gap:6px;padding:24px 14px;border-right:1px solid var(--line);background:color-mix(in srgb,var(--bg) 88%,transparent)}
+.brand{font-size:28px;font-weight:700;color:var(--accent);padding:0 12px 20px;letter-spacing:.06em}
+.nav-btn{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:10px;color:var(--mute);text-decoration:none}
+.nav-btn:hover{color:var(--text)}
+.nav-btn[aria-current=page]{color:var(--text);background:color-mix(in srgb,var(--accent) 13%,transparent);box-shadow:inset 3px 0 var(--accent)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--gold);display:none}
+body.running .dot{display:block;animation:pulse 1.2s ease-in-out infinite}
+
+main{min-width:0;min-height:0}
+.view{display:none;height:100%;overflow-y:auto;padding:28px clamp(16px,4vw,52px)}
+.view.active{display:block}
+#view-chat.active{display:flex;flex-direction:column;overflow:hidden}
+
+/* Orb */
+.hero{display:flex;align-items:center;gap:26px;padding-bottom:16px;flex:none}
+.orb{--spd:1;position:relative;width:140px;height:140px;flex:none}
+.orb i{position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:var(--accent);border-bottom-color:color-mix(in srgb,var(--accent) 35%,transparent);animation:spin calc(8s/var(--spd)) linear infinite}
+.orb i:nth-child(2){inset:15px;border-top-color:transparent;border-left-color:var(--accent);border-right-color:color-mix(in srgb,var(--accent) 35%,transparent);animation-duration:calc(5s/var(--spd));animation-direction:reverse}
+.orb i:nth-child(3){inset:30px;border-style:dashed;border-color:color-mix(in srgb,var(--accent) 55%,transparent);animation-duration:calc(16s/var(--spd))}
+.orb b{position:absolute;inset:47px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff 0,var(--accent) 38%,color-mix(in srgb,var(--accent) 35%,transparent) 75%);box-shadow:0 0 36px var(--accent),0 0 90px color-mix(in srgb,var(--accent) 50%,transparent);animation:breathe calc(3.4s/var(--spd)) ease-in-out infinite}
+.orb[data-state=busy]{--spd:4}
+.orb[data-state=focus]{--accent:var(--gold);--spd:.6}
+body.calm .orb *,body.calm .dot{animation-play-state:paused}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes breathe{50%{transform:scale(1.14);opacity:.82}}
+@keyframes pulse{50%{opacity:.25}}
+
+/* Chat */
+.log{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:8px 2px}
+.msg{max-width:min(640px,88%);padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:var(--panel);white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.user{align-self:flex-end;background:color-mix(in srgb,var(--accent) 16%,var(--panel));border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+.msg.system{align-self:center;max-width:100%;background:none;border-style:dashed;color:var(--mute);font-size:14px;text-align:center}
+.empty{margin:auto;color:var(--mute);text-align:center;list-style:none}
+.composer{display:flex;gap:10px;padding-top:12px;flex:none}
+.composer .field{flex:1}
+
+/* Controls */
+.field{width:100%;padding:10px 12px;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+.field:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.btn{padding:10px 18px;border:1px solid var(--accent);border-radius:10px;background:var(--accent);color:#04121c;font-weight:600;cursor:pointer}
+.btn:hover{filter:brightness(1.1)}
+.btn.ghost{background:transparent;color:var(--text);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--accent)}
+.btn.danger{background:transparent;color:var(--bad);border-color:color-mix(in srgb,var(--bad) 50%,transparent)}
+.link{background:none;border:0;color:var(--accent);cursor:pointer;text-decoration:underline;padding:0 0 0 8px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row .field{flex:1;min-width:160px;width:auto}
+.row select.field{flex:0 0 auto;min-width:0}
+
+/* Tasks */
+.chips{display:flex;gap:8px;margin:16px 0}
+.chip{padding:5px 14px;border:1px solid var(--line);border-radius:99px;background:none;color:var(--mute);cursor:pointer}
+.chip.on{color:var(--text);border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.tasks{list-style:none;display:grid;gap:8px;margin-bottom:14px;padding:0}
+.task{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.task input{width:20px;height:20px;accent-color:var(--accent);flex:none}
+.task .txt{flex:1;overflow-wrap:anywhere}
+.task.done .txt{text-decoration:line-through;color:var(--mute)}
+.tag{font-size:13px;padding:1px 10px;border:1px solid var(--line);border-radius:99px;color:var(--mute)}
+.tag.high{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 55%,transparent)}
+.x{background:none;border:0;color:var(--mute);cursor:pointer;font-size:16px;padding:4px 6px;border-radius:6px}
+.x:hover{color:var(--bad)}
+
+/* Study */
+.study{display:flex;flex-wrap:wrap;align-items:center;gap:40px}
+.ring{position:relative;width:min(290px,72vw);aspect-ratio:1}
+.ring[data-mode=break]{--accent:var(--gold)}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg);fill:none;stroke-width:5}
+.track{stroke:var(--line)}
+.prog{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset .3s linear;filter:drop-shadow(0 0 6px var(--accent))}
+.ring-in{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring-in span{color:var(--mute)}
+.ring-in strong{font-size:64px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.study-side{display:grid;gap:16px;flex:1;min-width:240px;max-width:420px}
+label{display:grid;gap:6px;color:var(--mute);font-size:14px}
+label .field{color:var(--text);font-size:16px}
+
+/* Settings */
+.set{display:grid;gap:22px;max-width:520px}
+fieldset{border:0;padding:0}
+legend{color:var(--mute);font-size:14px;margin-bottom:8px}
+small{color:var(--mute);line-height:1.4}
+.check{display:flex;align-items:center;gap:10px;color:var(--text);font-size:16px}
+.check input{width:20px;height:20px;accent-color:var(--accent)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.swatches{display:flex;gap:12px}
+.sw{width:36px;height:36px;border-radius:50%;border:2px solid var(--line);background:var(--c);cursor:pointer}
+.sw[aria-pressed=true]{border-color:#fff;box-shadow:0 0 14px var(--c)}
+
+/* Mobile */
+@media (max-width:720px){
+  .app{grid-template-columns:1fr;grid-template-rows:1fr auto}
+  .nav{order:2;flex-direction:row;gap:2px;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));border-right:0;border-top:1px solid var(--line)}
+  .brand{display:none}
+  .nav-btn{flex:1;justify-content:center;gap:6px;padding:12px 4px;font-size:15px}
+  .nav-btn[aria-current=page]{box-shadow:inset 0 3px var(--accent)}
+  .view{padding:max(18px,env(safe-area-inset-top,0px)) 16px 18px}
+  .hero{gap:16px}
+  .orb{width:92px;height:92px}
+  .orb i:nth-child(2){inset:10px}.orb i:nth-child(3){inset:20px}.orb b{inset:31px}
+  .study{gap:24px;justify-content:center}
+  .ring-in strong{font-size:54px}
+  .row2{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
